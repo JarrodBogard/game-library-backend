@@ -5,6 +5,7 @@ const Game = require("../models/Game");
 const mongoose = require("mongoose");
 
 // get all games
+/*
 const getGames = async (req, res) => {
   //   const user_id = req.user._id;
 
@@ -13,13 +14,14 @@ const getGames = async (req, res) => {
 
   res.status(200).json(games);
 };
+*/
 
 // controller for users that like/favorite games
-// const getGamesByUser = async (req, res) => {
-//     const user_id = req.user._id
-//     const games = await Game.find({user_id}).sort({createdAt: -1})
-//     res.status(200).json(games)
-// }
+const getGames = async (req, res) => {
+  const user_id = req.user._id;
+  const games = await Game.find({ user_id }).sort({ createdAt: -1 });
+  res.status(200).json(games);
+};
 
 // get a single game
 const getGame = async (req, res) => {
@@ -53,8 +55,8 @@ const createGame = async (req, res) => {
 
   //   add document to database
   try {
-    // const user_id = req.user._id
-    const game = await Game.create({ title, price, release_date });
+    const user_id = req.user._id;
+    const game = await Game.create({ title, price, release_date, user_id });
     res.status(200).json(game);
   } catch (error) {
     res.status(400).json({ error: error.message });

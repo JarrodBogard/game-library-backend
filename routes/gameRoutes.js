@@ -16,10 +16,10 @@ const {
   updateGame,
 } = require("../controllers/gameControllers");
 
+router.use(requireAuth);
+
 // GET all games
 router.get("/", getGames);
-
-router.use(requireAuth);
 
 // GET a single game
 router.get("/:id", getGame);
