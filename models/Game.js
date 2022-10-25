@@ -23,6 +23,13 @@ const gameSchema = new Schema(
       type: String,
       required: true,
     },
+    fileName: {
+      type: String,
+    },
+    file: {
+      data: Buffer,
+      contentType: String,
+    },
   },
   { timestamps: true }
 );
