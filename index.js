@@ -18,9 +18,6 @@ const userRoutes = require("./routes/userRoutes");
 // middleware
 app.use(cors());
 app.use(express.json());
-const multer = require("multer");
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
 
 // port
 const PORT = process.env.PORT || 5000;
@@ -31,7 +28,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/games", gameRoutes);
-app.use("/api/games/image", upload.single("file"), gameRoutes);
 app.use("/api/users", userRoutes);
 
 // connect to database

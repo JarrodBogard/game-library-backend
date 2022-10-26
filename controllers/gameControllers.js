@@ -4,10 +4,6 @@ const Game = require("../models/Game");
 // mongoose library
 const mongoose = require("mongoose");
 
-// const multer = require("multer");
-// const storage = multer.memoryStorage();
-// const upload = multer({ storage });
-
 // get all games
 /*
 const getGames = async (req, res) => {
@@ -102,24 +98,28 @@ const updateGame = async (req, res) => {
   res.status(200).json(game);
 };
 
+// update image for a game
+
 const updateGameImg = async (req, res) => {
+  const { id } = req.params;
+
+  console.log(req.file, "---- req file ----");
   try {
     if (!req.file) {
       res.status(400).json({ error: "Must enter a file" });
     } else {
-      let imageUploadObject = {
+      let imageUpload = {
         file: {
           data: req.file.buffer,
           contentType: req.file.mimetype,
         },
-        fileName: req.body.fileName,
+        fileName: req.file.originalname,
       };
-      const game = await Game.findOneAndUpdate(
-        { _id: id },
-        { ...imageUploadObject }
-      );
-      const uploadProcess = await game.save();
-      res.status(200).json(game);
+      console.log(imageUpload, "---- image upload ----");
+      const game = await Game.findOneAndUpdate({ _id: id }, { ...imageUpload });
+      const updatedGame = await game.save();
+      console.log(updatedGame, "---- updated game ----");
+      res.status(200).json(updatedGame);
     }
   } catch (error) {
     console.error(error);
