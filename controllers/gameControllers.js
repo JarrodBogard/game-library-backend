@@ -4,6 +4,10 @@ const Game = require("../models/Game");
 // mongoose library
 const mongoose = require("mongoose");
 
+// const multer = require("multer");
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage });
+
 // get all games
 /*
 const getGames = async (req, res) => {
@@ -98,6 +102,31 @@ const updateGame = async (req, res) => {
   res.status(200).json(game);
 };
 
+const updateGameImg = async (req, res) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: "Must enter a file" });
+    } else {
+      let imageUploadObject = {
+        file: {
+          data: req.file.buffer,
+          contentType: req.file.mimetype,
+        },
+        fileName: req.body.fileName,
+      };
+      const game = await Game.findOneAndUpdate(
+        { _id: id },
+        { ...imageUploadObject }
+      );
+      const uploadProcess = await game.save();
+      res.status(200).json(game);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+};
+
 // export game controllers
 module.exports = {
   getGames,
@@ -105,4 +134,5 @@ module.exports = {
   createGame,
   deleteGame,
   updateGame,
+  updateGameImg,
 };

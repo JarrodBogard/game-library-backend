@@ -6,6 +6,9 @@ const router = express.Router();
 
 // middleware
 const requireAuth = require("../middleware/requireAuth");
+// const multer = require("multer");
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage });
 
 // destructured game controllers
 const {
@@ -14,6 +17,7 @@ const {
   createGame,
   deleteGame,
   updateGame,
+  updateGameImg,
 } = require("../controllers/gameControllers");
 
 router.use(requireAuth);
@@ -32,6 +36,9 @@ router.delete("/:id", deleteGame);
 
 // UPDATE a game
 router.patch("/:id", updateGame);
+
+// UPDATE a game Image
+router.patch("/image/:id", updateGameImg);
 
 // export games router
 module.exports = router;
