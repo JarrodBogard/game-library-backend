@@ -23,12 +23,15 @@ const gameSchema = new Schema(
       type: String,
       required: true,
     },
-    fileName: {
+    imgName: {
       type: String,
     },
-    file: {
+    img: {
       data: Buffer,
       contentType: String,
+    },
+    gameImg: {
+      type: String,
     },
   },
   { timestamps: true }

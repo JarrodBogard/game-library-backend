@@ -18,6 +18,7 @@ const userRoutes = require("./routes/userRoutes");
 // middleware
 app.use(cors());
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 
 // port
 const PORT = process.env.PORT || 5000;

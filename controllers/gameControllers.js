@@ -4,6 +4,8 @@ const Game = require("../models/Game");
 // mongoose library
 const mongoose = require("mongoose");
 
+const fs = require("fs");
+
 // get all games
 /*
 const getGames = async (req, res) => {
@@ -41,7 +43,9 @@ const getGame = async (req, res) => {
 };
 
 const createGame = async (req, res) => {
-  const { title, price, release_date } = req.body;
+  const { title, price, release_date, imgName } = req.body;
+  const { filename, mimetype } = req.file;
+  // const { path: gameImg } = req.file;
 
   let emptyFields = [];
   if (!title) emptyFields.push("title");
@@ -56,7 +60,18 @@ const createGame = async (req, res) => {
   //   add document to database
   try {
     const user_id = req.user._id;
-    const game = await Game.create({ title, price, release_date, user_id });
+    const game = await Game.create({
+      title,
+      price,
+      release_date,
+      user_id,
+      imgName,
+      img: {
+        data: fs.readFileSync("uploads/" + filename),
+        contentType: mimetype,
+      },
+      // gameImg,
+    });
     res.status(200).json(game);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -101,29 +116,32 @@ const updateGame = async (req, res) => {
 // update image for a game
 
 const updateGameImg = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; //
 
-  console.log(req.file, "---- req file ----");
   try {
     if (!req.file) {
-      res.status(400).json({ error: "Must enter a file" });
+      res.status(400).json({ error: "No file exists" });
     } else {
-      let imageUpload = {
-        file: {
-          data: req.file.buffer,
-          contentType: req.file.mimetype,
-        },
-        fileName: req.file.originalname,
-      };
-      console.log(imageUpload, "---- image upload ----");
-      const game = await Game.findOneAndUpdate({ _id: id }, { ...imageUpload });
-      const updatedGame = await game.save();
-      console.log(updatedGame, "---- updated game ----");
-      res.status(200).json(updatedGame);
+      const { buffer } = req.file;
+      const { mimetype } = req.file;
+      // const { path: gameImg } = req.file;
+      console.log(buffer, mimetype);
+      const game = await Game.findOneAndUpdate(
+        { _id: id },
+        {
+          img: {
+            data: buffer,
+            contentType: mimetype,
+          },
+        }
+        // { gameImg }
+      );
+      console.log(game);
+      res.status(200).json(game);
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Server Error");
+    console.log(error);
+    res.status(500).json({ error: "Server Error" });
   }
 };
 
