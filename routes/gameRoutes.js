@@ -67,7 +67,7 @@ router.delete("/:id", deleteGame);
 router.patch("/:id", updateGame);
 
 // UPDATE a game Image
-router.put("/image/:id", upload.single("file"), updateGameImg);
+router.put("/image/:id", upload.single("gameImg"), updateGameImg);
 
 // export games router
 module.exports = router;
