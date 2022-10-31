@@ -4,8 +4,6 @@ const Game = require("../models/Game");
 // mongoose library
 const mongoose = require("mongoose");
 
-const fs = require("fs");
-
 // get all games
 /*
 const getGames = async (req, res) => {
@@ -43,8 +41,7 @@ const getGame = async (req, res) => {
 };
 
 const createGame = async (req, res) => {
-  const { title, price, release_date, imgName } = req.body;
-  const { filename, mimetype } = req.file;
+  const { title, price, release_date } = req.body;
   // const { path: gameImg } = req.file;
 
   let emptyFields = [];
@@ -65,11 +62,6 @@ const createGame = async (req, res) => {
       price,
       release_date,
       user_id,
-      imgName,
-      img: {
-        data: fs.readFileSync("uploads/" + filename),
-        contentType: mimetype,
-      },
       // gameImg,
     });
     res.status(200).json(game);
@@ -125,7 +117,6 @@ const updateGameImg = async (req, res) => {
       const { buffer } = req.file;
       const { mimetype } = req.file;
       // const { path: gameImg } = req.file;
-      console.log(buffer, mimetype);
       const game = await Game.findOneAndUpdate(
         { _id: id },
         {
@@ -136,7 +127,6 @@ const updateGameImg = async (req, res) => {
         }
         // { gameImg }
       );
-      console.log(game);
       res.status(200).json(game);
     }
   } catch (error) {

@@ -16,7 +16,6 @@ const multer = require("multer");
 //   },
 //   filename: function (req, file, cb) {
 //     // add element to filename to retrieve image for specific game
-//     console.log(file, file.filename, file.originalname, "file on router");
 //     cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
 //   },
 // });
